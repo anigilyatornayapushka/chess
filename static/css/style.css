@@ -103,32 +103,6 @@ input[type='radio'] {
 #black_pawn_promote {
     display: none;
 }
-.return_move {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 200%;
-    top: 18px;
-    left: 1158px;
-    width: 50px;
-    height: 50px;
-    background: white;
-    border: 2px solid black;
-}
-.loose {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 200%;
-    top: 108px;
-    left: 1158px;
-    width: 50px;
-    height: 50px;
-    background: white;
-    border: 2px solid black;
-}
 #circle_black
 {
     position: absolute;

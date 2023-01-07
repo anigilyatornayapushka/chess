@@ -16,7 +16,6 @@ function cellFilling() {
                 placePieces(board);
             };
             f.preventDefault();
-            console.log(cell.innerHTML)
             cell.style.border = '7px double yellow';
             for (let key in getLegalMoves(board)) {
                 if (key[0]+key[1] == numberToCoordinate[i%8+8]+numberToCoordinate[Math.floor(i/8)])
@@ -52,27 +51,6 @@ function placeHints() {
     chessBoard.innerHTML += '<p style="position: absolute; top: 375px; left: 465px; zoom: 2">f</p>';
     chessBoard.innerHTML += '<p style="position: absolute; top: 375px; left: 510px; zoom: 2">g</p>';
     chessBoard.innerHTML += '<p style="position: absolute; top: 375px; left: 555px; zoom: 2">h</p>';
-    chessBoard.innerHTML += '<div class="return_move">↺</div>';
-    chessBoard.innerHTML += '<div class="loose">🏲</div>';
-    const returnMoveBtn = document.body.querySelector('.chess_board .return_move');
-    const looseBtn = document.body.querySelector('.chess_board .loose');
-    returnMoveBtn.addEventListener('click', (f) => {
-        f.preventDefault();
-        for (elem of chessCells) {
-            elem.style.border = '0px';
-        };
-        if (memoryOfBoards.length == 1) {
-            return;
-        };
-        memoryOfBoards = memoryOfBoards.slice(0, memoryOfBoards.length-1)
-        board = memoryOfBoards[memoryOfBoards.length-1].slice();
-        chessRound--;
-        placePieces(board);
-    });
-    looseBtn.addEventListener('click', (f) => {
-        f.preventDefault()
-        win(sides[chessRound%2], 'question')
-    })
 };
 
 function placePieces(board) {
@@ -209,7 +187,8 @@ function doMove(board, move, hint = NaN) {
                     z-index: 1;
                     display: flex;
                     align-items: center;
-                    justify-content: center;`;
+                    justify-content: center;
+                    `;
                 white_form.addEventListener('submit', (f) => {
                     f.preventDefault();
                     let piece = '';
@@ -242,7 +221,8 @@ function doMove(board, move, hint = NaN) {
                 z-index: 1;
                 display: flex;
                 align-items: center;
-                justify-content: center;`;
+                justify-content: center;
+                `;
                 black_form.addEventListener('submit', (f) => {
                     f.preventDefault();
                     let piece = '';
@@ -253,8 +233,6 @@ function doMove(board, move, hint = NaN) {
                     black_div.style.display = 'none';
                     board[coord1] = '.';
                     board[coord2] = piece.toString();
-                    placePieces(board)
-                    checkCastle(board);
                     if (isMate(board)) {
                         win(sides[chessRound%2]);
                     };
@@ -264,6 +242,8 @@ function doMove(board, move, hint = NaN) {
                     if (noMaterial(board)) {
                         tie();
                     };
+                    memoryOfBoards.push(board.slice())
+                    memoryOfCastle.push([white_oo, white_ooo, black_oo, black_ooo])
                 });
                 break;
             case 'whitePawnDoubleMove':
@@ -1762,8 +1742,6 @@ placeHints();
 cellFilling();
 const chessCells = chessBoard.querySelectorAll('#cell');
 
-let memoryOfBoards = [board.slice()];
-
 placePieces(board)
 
 GAME = () => {
@@ -1780,7 +1758,6 @@ GAME = () => {
                     if ((move+data).toString() == key.toString()) {
                         move += data;
                         doMove(board, move, getLegalMoves(board)[move]);
-                        memoryOfBoards.push(board.slice())
                         break;
                     };
                 };
