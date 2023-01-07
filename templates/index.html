@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Zinchenko Bogdan">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+ </head>
+
+ <body>
+   <div class="chess_board"></div>
+
+   <div id="white_pawn_promote" class="shadow">
+      <form class="endscreen" method="GET">
+         <div class="images">
+            <div class="column"><input id="i1" type="radio" name="piece" value="B"><label for="i1"><img id="bord" class="piece" src="../static/img/white_bishop.png"></label></div>
+            <div class="column"><input id="i2" type="radio" name="piece" value="N"><label for="i2"><img id="bord" class="piece" src="../static/img/white_knight.png"></label></div>
+            <div class="column"><input id="i3" type="radio" name="piece" value="R"><label for="i3"><img id="bord" class="piece" src="../static/img/white_rook.png"></label></div>
+            <div class="column"><input id="i4" type="radio" name="piece" value="Q" checked><label for="i4"><img id="bord" class="piece" src="../static/img/white_queen.png"></label></div>
+         </div>
+         <input type="submit">
+      </form>
+   </div>
+
+   <div id="black_pawn_promote" class="shadow">
+      <form class="endscreen" method="GET">
+         <div class="images">
+            <div class="column"><input id="i5" type="radio" name="piece" value="b"><label for="i5"><img id="bord" class="piece" src="../static/img/black_bishop.png"></label></div>
+            <div class="column"><input id="i6" type="radio" name="piece" value="n"><label for="i6"><img id="bord" class="piece" src="../static/img/black_knight.png"></label></div>
+            <div class="column"><input id="i7" type="radio" name="piece" value="r"><label for="i7"><img id="bord" class="piece" src="../static/img/black_rook.png"></label></div>
+            <div class="column"><input id="i8" type="radio" name="piece" value="q" checked><label for="i8"><img id="bord" class="piece" src="../static/img/black_queen.png"></label></div>
+         </div>
+         <input type="submit">
+      </form>
+   </div>
+
+    <script src="../static/js/chess.js"></script>
+ </body>
+</html>
