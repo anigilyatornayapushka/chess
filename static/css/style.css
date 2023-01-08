@@ -66,17 +66,6 @@ input[type='text'] {
     height: 10%;
     text-align: center;
 }
-button {
-    position: absolute;
-    bottom: 100px;
-    outline: none;
-    width: 30%;
-    height: 10%;
-    text-align: center;
-    color: white;
-    background: green;
-    border: 2px solid white;
-}
 input[type='submit'] {
     position: absolute;
     bottom: 100px;
