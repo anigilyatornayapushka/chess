@@ -51,6 +51,7 @@ function placeHints() {
     chessBoard.innerHTML += '<p style="position: absolute; top: 375px; left: 465px; zoom: 2">f</p>';
     chessBoard.innerHTML += '<p style="position: absolute; top: 375px; left: 510px; zoom: 2">g</p>';
     chessBoard.innerHTML += '<p style="position: absolute; top: 375px; left: 555px; zoom: 2">h</p>';
+    shield.style.display = 'none';
 };
 
 function placePieces(board) {
@@ -1643,38 +1644,78 @@ function isTie(board) {
     return false;
 };
 
-function win(winner, question = NaN) {
+function win(winner) {
+    if (chessRound%2==1) {
+        chessCells[board.indexOf('K')].style.border = '8px double red';
+    } else {
+        chessCells[board.indexOf('k')].style.border = '8px double red';
+    }
     let screen = document.createElement('div');
     screen.className = 'shadow';
-    if (question) {
-        answer = +prompt('Are you sure? 1 - yes, else - no');
-        if (answer != 1) {
-            return;
+    screen.innerHTML = `
+        <form class='endscreen'>
+            <input type='text' readonly value='${winner} Wins!'>
+            <input type='submit' value='Close'>
+        </form>
+    `;
+    document.body.append(screen);
+    const winForm = document.body.querySelectorAll('.shadow .endscreen')[2];
+    winForm.addEventListener('submit', (f) => {
+            f.preventDefault();
+            screen.style.display = 'none';
+            shield.style.display = 'block';
+        });
+};
+
+function tie(info='Tie!') {
+    let screen = document.createElement('div');
+    screen.className = 'shadow';
+    screen.innerHTML = `
+    <form class='endscreen'>
+            <input type='text' readonly value='${info}'>
+            <input type='submit' value='Close'>
+        </form>
+        `;
+        document.body.querySelector('.shadow .endscreen').addEventListener('submit', (f) => {
+        f.preventDefault();
+        screen.display = 'none';
+    });
+    document.body.append(screen);
+    const tieForm = document.body.querySelectorAll('.shadow .endscreen')[2];
+    tieForm.addEventListener('submit', (f) => {
+            f.preventDefault();
+            screen.style.display = 'none';
+            shield.style.display = 'block';
+        });
+};
+
+function GAME() {
+    let move = '';
+    for (let i in chessCells) {
+        elem = chessCells[i];
+        elem.addEventListener('click', (f) => {
+            f.preventDefault()
+            if (move.length == 0) {
+                move += numberToCoordinate[i%8+8] + numberToCoordinate[Math.floor(i/8)]
+            } else {
+                let data = numberToCoordinate[i%8+8] + numberToCoordinate[Math.floor(i/8)];
+                for (let key in getLegalMoves(board)) {
+                    if ((move+data).toString() == key.toString()) {
+                        move += data;
+                        doMove(board, move, getLegalMoves(board)[move]);
+                        break;
+                    };
+                };
+                move = data;
+            };
+        });
+        if (i==63) {
+            break;
         };
     };
-    screen.innerHTML = `
-        <form class='endscreen'>
-            <input type='text' readonly value='${winner} Wins!'></input>
-            <input type='submit' value='Play Again!'></input>
-        </form>
-    `;
-    document.body.querySelector('.shadow .endscreen').addEventListener('submit', (f) => {f.defaultPrevented()});
-    document.body.append(screen);
 };
 
-function tie() {
-    let screen = document.createElement('div');
-    screen.className = 'shadow';
-    screen.innerHTML = `
-        <form class='endscreen'>
-            <input type='text' readonly value='Tie!'></input>
-            <input type='submit' value='Play Again!'></input>
-        </form>
-    `;
-    document.body.querySelector('.shadow .endscreen').addEventListener('submit', (f) => {f.defaultPrevented()});
-    document.body.append(screen);
-};
-
+const shield = document.body.querySelector('.shield');
 const white_form = document.body.querySelector('#white_pawn_promote .endscreen');
 const white_div = document.body.querySelector('#white_pawn_promote');
 const black_form = document.body.querySelector('#black_pawn_promote .endscreen');
@@ -1702,6 +1743,7 @@ const coordinatesToNumber = {
     '8' : 0,
 };
 
+let choose;
 let white_oo = true;
 let white_ooo = true;
 let black_oo = true;
@@ -1742,32 +1784,6 @@ placeHints();
 cellFilling();
 const chessCells = chessBoard.querySelectorAll('#cell');
 
-placePieces(board)
-
-GAME = () => {
-    let move = '';
-    for (let i in chessCells) {
-        elem = chessCells[i];
-        elem.addEventListener('click', (f) => {
-            f.preventDefault()
-            if (move.length == 0) {
-                move += numberToCoordinate[i%8+8] + numberToCoordinate[Math.floor(i/8)]
-            } else {
-                let data = numberToCoordinate[i%8+8] + numberToCoordinate[Math.floor(i/8)];
-                for (let key in getLegalMoves(board)) {
-                    if ((move+data).toString() == key.toString()) {
-                        move += data;
-                        doMove(board, move, getLegalMoves(board)[move]);
-                        break;
-                    };
-                };
-                move = data;
-            };
-        });
-        if (i==63) {
-            break;
-        };
-    };
-};
+placePieces(board);
 
 GAME();
